@@ -3,12 +3,15 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchMovies } from '../../actions/movies/moviesActions';
+import { fetchMovie } from '../../actions/movies/movieActions';
 
 import MovieListView from '../../components/MovieListView';
 
 type Props = {
     movies: Object<any>,
+    movie: Object,
     getMovies: (params: { page: number }) => void,
+    getMovie: (id: number) => void,
     moreResult: boolean,
     nextPage: string
 };
@@ -37,6 +40,10 @@ class MoviesContainer extends Component<void, Props, State> {
         }
     }
 
+    showMovieDetails(id) {
+        this.props.getMovie(id);
+    }
+
     render() {
         const { movies } = this.props;
 
@@ -45,6 +52,7 @@ class MoviesContainer extends Component<void, Props, State> {
                 <MovieListView
                     movies={movies}
                     onEndReached={() => this.onEndReached()}
+                    showMovieDetails={id => this.showMovieDetails(id)}
                 />
             </View>
         );
@@ -52,15 +60,18 @@ class MoviesContainer extends Component<void, Props, State> {
 }
 
 const mapStateToProps = ({
-    moviesReducer: { movies, moreResult, nextPage }
+    moviesReducer: { movies, moreResult, nextPage },
+    movieReducer: { movie }
 }) => ({
+    movie,
     movies,
     moreResult,
     nextPage
 });
 
 const mapDispatchToProps = dispatch => ({
-    getMovies: bindActionCreators(fetchMovies, dispatch)
+    getMovies: bindActionCreators(fetchMovies, dispatch),
+    getMovie: bindActionCreators(fetchMovie, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoviesContainer);

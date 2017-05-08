@@ -6,7 +6,8 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 type Props = {
     movie: Object<any>,
     width: string,
-    height: string
+    height: string,
+    handleClick: (id: number) => void
 };
 
 class MovieListViewItem extends Component<void, Props, void> {
@@ -17,11 +18,14 @@ class MovieListViewItem extends Component<void, Props, void> {
     }
 
     render() {
-        const { movie, height, width } = this.props;
+        const { handleClick, movie, height, width } = this.props;
         const uri = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
 
         return (
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity
+                key={movie.id}
+                activeOpacity={0.7}
+                onPress={() => handleClick(movie.id)}>
                 <Image
                     resizeMode="cover"
                     style={{ width, height }}

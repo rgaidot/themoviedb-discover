@@ -7,6 +7,7 @@ import MovieListViewItem from './MovieListViewItem';
 
 type Props = {
     movies: Object<any>,
+    showMovieDetails: (id: number) => void,
     onEndReached: () => void
 };
 
@@ -40,7 +41,7 @@ class MovieList extends Component<void, Props, State> {
     }
 
     render() {
-        const { movies, onEndReached } = this.props;
+        const { showMovieDetails, movies, onEndReached } = this.props;
         const { ds, width, height } = this.state;
 
         return (
@@ -57,6 +58,7 @@ class MovieList extends Component<void, Props, State> {
                             movie={movie}
                             height={height}
                             width={width}
+                            handleClick={id => showMovieDetails(id)}
                         />
                     )}
                 />

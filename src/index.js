@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
-import RootContainers from './containers/RootContainer';
+import RootContainer from './containers/RootContainer';
 import rootStore from './store';
 import rootReducer from './reducers';
 
@@ -21,7 +21,7 @@ export default class ThemoviedbDiscover extends Component<void, Props, void> {
     render() {
         return (
             <Provider {...{ store }}>
-                <RootContainers />
+                <RootContainer />
             </Provider>
         );
     }
