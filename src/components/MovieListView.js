@@ -5,16 +5,18 @@ import { ListView, View, StyleSheet } from 'react-native';
 
 import MovieListViewItem from './MovieListViewItem';
 
+import type {
+    StyleObj
+} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+
 type Props = {
-    movies: Object<any>,
+    movies: Array<any>,
     showMovieDetails: (id: number) => void,
     onEndReached: () => void
 };
 
 type State = {
-    ds: Object<any>,
-    width: string,
-    height: string
+    ds: Array<any>
 };
 
 class MovieList extends Component<void, Props, State> {
@@ -24,25 +26,18 @@ class MovieList extends Component<void, Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const ds = new ListView.DataSource({
+        const ds: Array<any> = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
 
         this.state = { ds };
     }
 
-    onLayout(event: Event) {
-        const { width, height } = event.nativeEvent.layout;
-
-        this.setState({
-            width: width,
-            height: height
-        });
-    }
-
     render() {
-        const { showMovieDetails, movies, onEndReached } = this.props;
-        const { ds, width, height } = this.state;
+        const {
+            props: { showMovieDetails, movies, onEndReached },
+            state: { ds }
+        } = this;
 
         return (
             <View style={styles.component}>
@@ -52,12 +47,9 @@ class MovieList extends Component<void, Props, State> {
                     onEndReached={() => onEndReached()}
                     removeClippedSubviews={true}
                     dataSource={ds.cloneWithRows(movies)}
-                    onLayout={event => this.onLayout(event)}
-                    renderRow={movie => (
+                    renderRow={(movie: ?any) => (
                         <MovieListViewItem
                             movie={movie}
-                            height={height}
-                            width={width}
                             handleClick={id => showMovieDetails(id)}
                         />
                     )}
@@ -69,7 +61,7 @@ class MovieList extends Component<void, Props, State> {
 
 export default MovieList;
 
-const styles = StyleSheet.create({
+const styles: StyleObj = StyleSheet.create({
     component: {
         flex: 1
     }

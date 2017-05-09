@@ -6,6 +6,7 @@ install-npm:
 		@curl -o- -L https://yarnpkg.com/install.sh | bash
 		@yarn
 		@yarn config set version-git-message "v%s"
+		@./node_modules/.bin/flow-typed install
 
 prettier:
 		@./node_modules/.bin/prettier --write --single-quote \

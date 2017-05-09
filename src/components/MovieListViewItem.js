@@ -1,31 +1,70 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Dimensions,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+
+import type {
+    StyleObj
+} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+
+type movie = {
+    id: number,
+    overview: string,
+    title: string,
+    poster_path: string
+};
 
 type Props = {
-    movie: Object<any>,
-    width: string,
-    height: string,
+    movie: movie,
     handleClick: (id: number) => void
 };
 
-class MovieListViewItem extends Component<void, Props, void> {
+type State = {
+    width: number,
+    height: number
+};
+
+class MovieListViewItem extends Component<void, Props, State> {
     props: Props;
+    state: State;
 
     constructor(props: Props) {
         super(props);
+
+        const {
+            width,
+            height
+        }: { width: number, height: number } = Dimensions.get('window');
+
+        this.state = { width, height };
     }
 
     render() {
-        const { handleClick, movie, height, width } = this.props;
-        const uri = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+        const {
+            props: { handleClick, movie: { id, overview, title, poster_path } },
+            state: { width, height }
+        }: {
+            props: {
+                handleClick: (id: number) => void,
+                movie: movie
+            },
+            state: { width: number, height: number }
+        } = this;
+
+        const uri = `https://image.tmdb.org/t/p/w500/${poster_path}`;
 
         return (
             <TouchableOpacity
-                key={movie.id}
+                key={id}
                 activeOpacity={0.7}
-                onPress={() => handleClick(movie.id)}>
+                onPress={() => handleClick(id)}>
                 <Image
                     resizeMode="cover"
                     style={{ width, height }}
@@ -33,10 +72,10 @@ class MovieListViewItem extends Component<void, Props, void> {
                 />
                 <View style={styles.viewText}>
                     <Text style={styles.title}>
-                        {movie.title}
+                        {title}
                     </Text>
                     <View style={styles.separator} />
-                    <Text style={styles.overview}>{movie.overview}</Text>
+                    <Text style={styles.overview}>{overview}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -45,7 +84,7 @@ class MovieListViewItem extends Component<void, Props, void> {
 
 export default MovieListViewItem;
 
-const styles = StyleSheet.create({
+const styles: StyleObj = StyleSheet.create({
     component: {
         flex: 1
     },

@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -7,22 +9,32 @@ import { fetchMovie } from '../../actions/movies/movieActions';
 
 import MovieListView from '../../components/MovieListView';
 
+import type {
+    StyleObj
+} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+
+type movie = any;
+type movies = Array<any>;
+type moreResult = moreResult;
+type nextPage = number;
+
 type Props = {
-    movies: Object<any>,
-    movie: Object,
+    movies: movies,
+    movie: movie,
     getMovies: (params: { page: number }) => void,
     getMovie: (id: number) => void,
     moreResult: boolean,
-    nextPage: string
+    nextPage: number,
+    moviesReducer: (
+        movies: movies,
+        moreResult: moreResult,
+        nextPage: nextPage
+    ) => void,
+    movieReducer: movie => void
 };
 
-type State = {
-    movies: Object<any>
-};
-
-class MoviesContainer extends Component<void, Props, State> {
+class MoviesContainer extends Component<void, Props, void> {
     props: Props;
-    state: State;
 
     constructor(props: Props) {
         super(props);
@@ -33,7 +45,7 @@ class MoviesContainer extends Component<void, Props, State> {
     }
 
     onEndReached() {
-        const { getMovies, nextPage, moreResult } = this.props;
+        const { props: { getMovies, nextPage, moreResult } } = this;
 
         if (moreResult) {
             getMovies(nextPage);
@@ -45,7 +57,7 @@ class MoviesContainer extends Component<void, Props, State> {
     }
 
     render() {
-        const { movies } = this.props;
+        const { props: { movies } } = this;
 
         return (
             <View style={styles.container}>
@@ -62,6 +74,13 @@ class MoviesContainer extends Component<void, Props, State> {
 const mapStateToProps = ({
     moviesReducer: { movies, moreResult, nextPage },
     movieReducer: { movie }
+}: {
+    moviesReducer: {
+        movies: Array<any>,
+        moreResult: boolean,
+        nextPage: number
+    },
+    movieReducer: { movie: any }
 }) => ({
     movie,
     movies,
@@ -69,14 +88,14 @@ const mapStateToProps = ({
     nextPage
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
     getMovies: bindActionCreators(fetchMovies, dispatch),
     getMovie: bindActionCreators(fetchMovie, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoviesContainer);
 
-const styles = StyleSheet.create({
+const styles: StyleObj = StyleSheet.create({
     container: {
         flex: 1
     }

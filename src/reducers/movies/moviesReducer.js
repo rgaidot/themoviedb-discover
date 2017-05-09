@@ -5,26 +5,39 @@ import {
     MOVIES_GET_FETCH_FAILURE
 } from '../../actions/movies/moviesActions';
 
+import type { Action } from '../../flow/types/Action';
+
 const initialState = {
     moreResult: false,
     movies: [],
     nextPage: 0
 };
 
-export default (state: any = initialState, action) => {
+export default (state: any = initialState, action: Action) => {
     switch (action.type) {
         case MOVIES_GET_FETCH_SUCCESS:
-            return {
-                ...state,
-                moreResult: action.payload.moreResult,
-                nextPage: action.payload.nextPage,
-                movies: [...state.movies, ...action.payload.results]
-            };
+            const {
+                payload: { moreResult, nextPage, results }
+            }: {
+                payload: {
+                    moreResult: boolean,
+                    nextPage: number,
+                    results: Array<any>
+                }
+            } = action;
 
-        case MOVIES_GET_FETCH_FAILURE:
             return {
                 ...state,
-                ...action.payload.error
+                moreResult,
+                nextPage,
+                movies: [...state.movies, ...results]
+            };
+        case MOVIES_GET_FETCH_FAILURE:
+            const { payload: { error } }: { payload: { error: any } } = action;
+
+            return {
+                ...state,
+                ...error
             };
         default:
             return state;

@@ -1,7 +1,7 @@
 export default {
     api: {
         url: 'https://api.themoviedb.org',
-        key: 'YOUR-KEY',
+        key: '***REMOVED***',
         lang: 'fr-FR',
         initSortBy: 'popularity.desc',
         initYear: '2017'
