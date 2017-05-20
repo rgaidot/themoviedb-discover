@@ -19,7 +19,7 @@ type State = {
     ds: Array<any>
 };
 
-class MovieList extends Component<void, Props, State> {
+class MovieListView extends Component<void, Props, State> {
     props: Props;
     state: State;
 
@@ -59,7 +59,7 @@ class MovieList extends Component<void, Props, State> {
     }
 }
 
-export default MovieList;
+export default MovieListView;
 
 const styles: StyleObj = StyleSheet.create({
     component: {

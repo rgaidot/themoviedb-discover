@@ -1,7 +1,8 @@
 export default {
     api: {
         url: 'https://api.themoviedb.org',
-        key: '***REMOVED***',
+        url_images: 'https://image.tmdb.org/t/p',
+        key: 'YOUR-KEY',
         lang: 'fr-FR',
         initSortBy: 'popularity.desc',
         initYear: '2017'

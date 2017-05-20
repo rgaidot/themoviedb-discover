@@ -21,6 +21,8 @@ type movie = {
     poster_path: string
 };
 
+import config from '../config';
+
 type Props = {
     movie: movie,
     handleClick: (id: number) => void
@@ -43,12 +45,15 @@ class MovieListViewItem extends Component<void, Props, State> {
             height
         }: { width: number, height: number } = Dimensions.get('window');
 
-        this.state = { width, height };
+        this.state = { width, height: height / 2 };
     }
 
     render() {
         const {
-            props: { handleClick, movie: { id, overview, title, poster_path } },
+            props: {
+                handleClick,
+                movie: { id, overview, title, poster_path, backdrop_path }
+            },
             state: { width, height }
         }: {
             props: {
@@ -58,7 +63,7 @@ class MovieListViewItem extends Component<void, Props, State> {
             state: { width: number, height: number }
         } = this;
 
-        const uri = `https://image.tmdb.org/t/p/w500/${poster_path}`;
+        const uri = `${config.api.url_images}/w780/${backdrop_path || poster_path}`;
 
         return (
             <TouchableOpacity
@@ -67,15 +72,25 @@ class MovieListViewItem extends Component<void, Props, State> {
                 onPress={() => handleClick(id)}>
                 <Image
                     resizeMode="cover"
-                    style={{ width, height }}
+                    style={{ width, height, opacity: 0.9 }}
                     source={{ uri }}
                 />
-                <View style={styles.viewText}>
+                <View style={styles.viewItem}>
                     <Text style={styles.title}>
                         {title}
                     </Text>
-                    <View style={styles.separator} />
-                    <Text style={styles.overview}>{overview}</Text>
+                    <View style={styles.details}>
+                        <Image
+                            source={{
+                                uri: `${config.api.url_images}/w185/${poster_path}`
+                            }}
+                            style={styles.poster}
+                        />
+                        <Text numberOfLines={11} style={styles.description}>
+                            {overview}
+                        </Text>
+                    </View>
+
                 </View>
             </TouchableOpacity>
         );
@@ -88,37 +103,42 @@ const styles: StyleObj = StyleSheet.create({
     component: {
         flex: 1
     },
-    viewText: {
+    viewItem: {
         position: 'absolute',
+        top: 40,
         left: 0,
-        bottom: 40,
         right: 0,
-        opacity: 0.7,
-        backgroundColor: 'transparent',
-        paddingLeft: 15,
-        paddingRight: 15
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    details: {
+        flexDirection: 'row'
+    },
+    poster: {
+        height: 184,
+        width: 135,
+        borderWidth: 2,
+        borderColor: '#000000'
     },
     title: {
-        fontSize: 22,
+        fontSize: 18,
+        paddingBottom: 10,
         color: 'white',
         fontWeight: 'bold',
         textShadowRadius: 1,
         textShadowOffset: { width: 1, height: 1 },
-        textShadowColor: '#000000'
+        textShadowColor: '#000000',
+        backgroundColor: 'transparent'
     },
-    overview: {
-        fontSize: 12,
+    description: {
+        fontSize: 14,
         color: 'white',
         textShadowRadius: 1,
         textShadowOffset: { width: 1, height: 1 },
         textShadowColor: '#000000',
         paddingLeft: 15,
-        paddingRight: 15
-    },
-    separator: {
-        backgroundColor: 'white',
-        height: 1,
-        marginTop: 8,
-        marginBottom: 8
+        paddingRight: 15,
+        flex: 1,
+        backgroundColor: 'transparent'
     }
 });
