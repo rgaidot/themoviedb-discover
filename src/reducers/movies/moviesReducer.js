@@ -5,7 +5,8 @@ import {
     MOVIES_GET_FETCH_FAILURE
 } from '../../actions/movies/moviesActions';
 
-import type { Action } from '../../flow/types/Action';
+import type { Action } from '../../../flow/types/action';
+import type { Movie } from '../../../flow/types/movie';
 
 const initialState = {
     moreResult: false,
@@ -15,14 +16,14 @@ const initialState = {
 
 export default (state: any = initialState, action: Action) => {
     switch (action.type) {
-        case MOVIES_GET_FETCH_SUCCESS:
+        case MOVIES_GET_FETCH_SUCCESS: {
             const {
                 payload: { moreResult, nextPage, results }
             }: {
                 payload: {
                     moreResult: boolean,
                     nextPage: number,
-                    results: Array<any>
+                    results: Array<Movie>
                 }
             } = action;
 
@@ -32,13 +33,15 @@ export default (state: any = initialState, action: Action) => {
                 nextPage,
                 movies: [...state.movies, ...results]
             };
-        case MOVIES_GET_FETCH_FAILURE:
+        }
+        case MOVIES_GET_FETCH_FAILURE: {
             const { payload: { error } }: { payload: { error: any } } = action;
 
             return {
                 ...state,
                 ...error
             };
+        }
         default:
             return state;
     }

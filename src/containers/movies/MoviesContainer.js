@@ -13,24 +13,21 @@ import type {
     StyleObj
 } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
-type movie = any;
-type movies = Array<any>;
-type moreResult = moreResult;
-type nextPage = number;
+import type { Movie } from '../../../flow/types/movie';
 
 type Props = {
-    movies: movies,
-    movie: movie,
-    getMovies: (params: { page: number }) => void,
+    movies: Array<Movie>,
+    movie: Movie,
+    getMovies: (page: number) => void,
     getMovie: (id: number) => void,
     moreResult: boolean,
     nextPage: number,
     moviesReducer: (
-        movies: movies,
-        moreResult: moreResult,
-        nextPage: nextPage
+        movies: Array<Movie>,
+        moreResult: boolean,
+        nextPage: number
     ) => void,
-    movieReducer: movie => void
+    movieReducer: (movie: Movie) => void
 };
 
 class MoviesContainer extends Component<void, Props, void> {

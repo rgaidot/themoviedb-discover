@@ -14,17 +14,12 @@ import type {
     StyleObj
 } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
-type movie = {
-    id: number,
-    overview: string,
-    title: string,
-    poster_path: string
-};
+import type { Movie } from '../../flow/types/movie';
 
 import config from '../config';
 
 type Props = {
-    movie: movie,
+    movie: Movie,
     handleClick: (id: number) => void
 };
 
@@ -55,12 +50,6 @@ class MovieListViewItem extends Component<void, Props, State> {
                 movie: { id, overview, title, poster_path, backdrop_path }
             },
             state: { width, height }
-        }: {
-            props: {
-                handleClick: (id: number) => void,
-                movie: movie
-            },
-            state: { width: number, height: number }
         } = this;
 
         const uri = `${config.api.url_images}/w780/${backdrop_path || poster_path}`;

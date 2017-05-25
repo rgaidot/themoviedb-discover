@@ -9,8 +9,10 @@ import type {
     StyleObj
 } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
+import type { Movie } from '../../flow/types/movie';
+
 type Props = {
-    movies: Array<any>,
+    movies: Array<Movie>,
     showMovieDetails: (id: number) => void,
     onEndReached: () => void
 };
